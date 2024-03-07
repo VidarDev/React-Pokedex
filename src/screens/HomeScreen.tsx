@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
-import Animated from "react-native-reanimated";
+import { ZoomInEasyUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import shakeAnimation from "@/animations/ShakeAnimation";
 import widthAnimation from "@/animations/WidthAnimation";
 import ImageVD from "@/components/ImageVD";
-import Styles from "@/styles/Styles";
+import ViewVD from "@/components/ViewVD";
 import useRandomNumber from "@/hooks/useRandomNumber";
 import { Routes } from "@/navigation/Routes";
+import Styles from "@/styles/Styles";
 
 function HomeScreen({ navigation }: { navigation: any }) {
   const [readyNextStep, setReadyNextStep] = useState(false);
@@ -41,12 +42,12 @@ function HomeScreen({ navigation }: { navigation: any }) {
           Styles.flex_justify_center
         ]}
       >
-        <Animated.View>
+        <ViewVD entering={ZoomInEasyUp}>
           <ImageVD
             source="pokeball"
             style={[Screen.pokeball, shakeAnime, widthAnim]}
           />
-        </Animated.View>
+        </ViewVD>
       </Pressable>
     </SafeAreaView>
   );

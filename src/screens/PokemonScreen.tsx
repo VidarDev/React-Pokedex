@@ -1,24 +1,44 @@
 import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, {
+  BounceIn,
+  FadeInLeft,
+  FadeInRight,
+  FadeInUp
+} from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import ImageVD from "@/components/ImageVD";
+import InformationVD from "@/components/InformationVD";
 import MenuVD from "@/components/MenuVD";
 import TextVD from "@/components/TextVD";
+import TitleVD from "@/components/TitleVD";
 import ViewVD from "@/components/ViewVD";
 import ErrorScreen from "@/screens/ErrorScreen";
 import LoadingScreen from "@/screens/LoadingScreen";
 import PokemonColorStyles from "@/styles/PokemonColorStyles";
 import Styles from "@/styles/Styles";
+import StatVD from "@/components/StatVD";
 
-function normalizeString(str: string) {
+function formatString(str: string) {
   return str
     .normalize("NFD") // Separate letters from accents
     .replace(/[\u0300-\u036f]/g, "") // Remove accents
     .toLowerCase(); // Convert the string to lowercase
+}
+
+function formatNumber(nbr: number) {
+  // Convert number to string
+  let nbrStr: string = nbr.toString();
+
+  // If the number has less than 3 digits, add zeros to the left
+  while (nbrStr.length < 3) {
+    nbrStr = "0" + nbrStr;
+  }
+
+  return nbrStr;
 }
 
 function StartScreen({ navigation, route }: { navigation: any; route: any }) {
@@ -29,7 +49,6 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
     const response = await axios.get(
       `https://tyradex.tech/api/v1/pokemon/${pokemon}`
     );
-    console.log(response.data.pokedexId);
     return response.data;
   };
 
@@ -41,7 +60,7 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
 
   // Dynamic style
   const typeName: string = data
-    ? normalizeString(data.types[0].name.toLowerCase())
+    ? formatString(data.types[0].name.toLowerCase())
     : "unknow";
   const dynamicStyle =
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -68,6 +87,7 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
           style={[Styles.flex_row, Styles.flex_justify_center, Styles.w_full]}
         >
           <ImageVD
+            entering={BounceIn}
             source={data.sprites.regular}
             style={[Screen.image]}
           />
@@ -80,10 +100,16 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
             Styles.mb_24
           ]}
         >
-          <TextVD style={[Styles.font_24, Styles.weight_light]}>
-            #{data.pokedexId}
+          <TextVD
+            entering={FadeInUp}
+            style={[Styles.font_24, Styles.weight_light]}
+          >
+            #{formatNumber(data.pokedex_id)}
           </TextVD>
-          <TextVD style={[Styles.font_40, Styles.weight_bold]}>
+          <TextVD
+            entering={FadeInUp.delay(100)}
+            style={[Styles.font_40, Styles.weight_bold]}
+          >
             {data.name.fr}
           </TextVD>
           <ViewVD
@@ -95,265 +121,81 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
             ]}
           >
             <ImageVD
-              source={`https://raw.githubusercontent.com/Yarkis01/PokeAPI/images/types/${normalizeString(data.types[0].name)}.png`}
+              entering={BounceIn.delay(200)}
+              source={`https://raw.githubusercontent.com/Yarkis01/PokeAPI/images/types/${formatString(data.types[0].name)}.png`}
               style={[Screen.image, Styles.w_40, Styles.h_40]}
             />
             {data.types[1] && (
               <ImageVD
-                source={`https://raw.githubusercontent.com/Yarkis01/PokeAPI/images/types/${normalizeString(data.types[1].name)}.png`}
+                entering={BounceIn.delay(300)}
+                source={`https://raw.githubusercontent.com/Yarkis01/PokeAPI/images/types/${formatString(data.types[1].name)}.png`}
                 style={[Screen.image, Styles.w_40, Styles.h_40]}
               />
             )}
           </ViewVD>
         </ViewVD>
-        <ViewVD
-          style={[
-            Styles.flex_column,
-            Styles.flex_align_center,
-            Styles.mb_16,
-            Styles.mt_8
-          ]}
-        >
-          <TextVD style={[Styles.font_24, Styles.weight_bold]}>
-            Informations
-          </TextVD>
-        </ViewVD>
-        <ViewVD
-          style={[
-            Styles.flex_row,
-            Styles.w_full,
-            Styles.flex_justify_space_between,
-            Styles.flex_align_center,
-            Styles.mb_8
-          ]}
-        >
-          <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-            Géneration
-          </TextVD>
-          <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-            {data.generation}
-          </TextVD>
-        </ViewVD>
-        <ViewVD
-          style={[
-            Styles.flex_row,
-            Styles.w_full,
-            Styles.flex_justify_space_between,
-            Styles.flex_align_center,
-            Styles.mb_8
-          ]}
-        >
-          <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-            Catégorie
-          </TextVD>
-          <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-            {data.category.replace(/Pokémon/g, "")}
-          </TextVD>
-        </ViewVD>
-        <ViewVD
-          style={[
-            Styles.flex_row,
-            Styles.w_full,
-            Styles.flex_justify_space_between,
-            Styles.flex_align_center,
-            Styles.mb_8
-          ]}
-        >
-          <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-            Hauteur
-          </TextVD>
-          <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-            {data.height}
-          </TextVD>
-        </ViewVD>
-        <ViewVD
-          style={[
-            Styles.flex_row,
-            Styles.w_full,
-            Styles.flex_justify_space_between,
-            Styles.flex_align_center,
-            Styles.mb_8
-          ]}
-        >
-          <TextVD style={[Styles.font_20, Styles.weight_regular]}>Poids</TextVD>
-          <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-            {data.weight}
-          </TextVD>
-        </ViewVD>
-        <ViewVD
-          style={[
-            Styles.flex_column,
-            Styles.flex_align_center,
-            Styles.mb_16,
-            Styles.mt_8
-          ]}
-        >
-          <TextVD style={[Styles.font_24, Styles.weight_bold]}>
-            Statistiques
-          </TextVD>
-        </ViewVD>
-        <ViewVD style={[Styles.flex_column, Styles.w_full, Styles.mb_8]}>
-          <TextVD style={[Styles.font_20, Styles.weight_regular, Styles.mb_2]}>
-            Point de vie
-          </TextVD>
-          <ViewVD
-            style={[
-              Styles.flex_row,
-              Styles.w_full,
-              Styles.flex_justify_space_between,
-              Styles.flex_align_center,
-
-              Styles.gap_16
-            ]}
-          >
-            <ViewVD
-              style={[
-                Styles.h_24,
-                Styles.border_radius_8,
-                Styles.bg_white,
-                { width: data.stats.hp * 2 }
-              ]}
-            ></ViewVD>
-            <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-              {data.stats.hp}
-            </TextVD>
-          </ViewVD>
-        </ViewVD>
-        <ViewVD style={[Styles.flex_column, Styles.w_full, Styles.mb_8]}>
-          <TextVD style={[Styles.font_20, Styles.weight_regular, Styles.mb_2]}>
-            Attaque
-          </TextVD>
-          <ViewVD
-            style={[
-              Styles.flex_row,
-              Styles.w_full,
-              Styles.flex_justify_space_between,
-              Styles.flex_align_center,
-
-              Styles.gap_16
-            ]}
-          >
-            <ViewVD
-              style={[
-                Styles.h_24,
-                Styles.border_radius_8,
-                Styles.bg_white,
-                { width: data.stats.atk * 2 }
-              ]}
-            ></ViewVD>
-            <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-              {data.stats.atk}
-            </TextVD>
-          </ViewVD>
-        </ViewVD>
-        <ViewVD style={[Styles.flex_column, Styles.w_full, Styles.mb_8]}>
-          <TextVD style={[Styles.font_20, Styles.weight_regular, Styles.mb_2]}>
-            Défense
-          </TextVD>
-          <ViewVD
-            style={[
-              Styles.flex_row,
-              Styles.w_full,
-              Styles.flex_justify_space_between,
-              Styles.flex_align_center,
-
-              Styles.gap_16
-            ]}
-          >
-            <ViewVD
-              style={[
-                Styles.h_24,
-                Styles.border_radius_8,
-                Styles.bg_white,
-                { width: data.stats.def * 2 }
-              ]}
-            ></ViewVD>
-            <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-              {data.stats.def}
-            </TextVD>
-          </ViewVD>
-        </ViewVD>
-        <ViewVD style={[Styles.flex_column, Styles.w_full, Styles.mb_8]}>
-          <TextVD style={[Styles.font_20, Styles.weight_regular, Styles.mb_2]}>
-            Attaque Spéciale
-          </TextVD>
-          <ViewVD
-            style={[
-              Styles.flex_row,
-              Styles.w_full,
-              Styles.flex_justify_space_between,
-              Styles.flex_align_center,
-
-              Styles.gap_16
-            ]}
-          >
-            <ViewVD
-              style={[
-                Styles.h_24,
-                Styles.border_radius_8,
-                Styles.bg_white,
-                { width: data.stats.spe_atk * 2 }
-              ]}
-            ></ViewVD>
-            <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-              {data.stats.spe_atk}
-            </TextVD>
-          </ViewVD>
-        </ViewVD>
-        <ViewVD style={[Styles.flex_column, Styles.w_full, Styles.mb_8]}>
-          <TextVD style={[Styles.font_20, Styles.weight_regular, Styles.mb_2]}>
-            Attaque Défense
-          </TextVD>
-          <ViewVD
-            style={[
-              Styles.flex_row,
-              Styles.w_full,
-              Styles.flex_justify_space_between,
-              Styles.flex_align_center,
-
-              Styles.gap_16
-            ]}
-          >
-            <ViewVD
-              style={[
-                Styles.h_24,
-                Styles.border_radius_8,
-                Styles.bg_white,
-                { width: data.stats.spe_def * 2 }
-              ]}
-            ></ViewVD>
-            <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-              {data.stats.spe_def}
-            </TextVD>
-          </ViewVD>
-        </ViewVD>
-        <ViewVD style={[Styles.flex_column, Styles.w_full, Styles.mb_64]}>
-          <TextVD style={[Styles.font_20, Styles.weight_regular, Styles.mb_2]}>
-            Vitesse
-          </TextVD>
-          <ViewVD
-            style={[
-              Styles.flex_row,
-              Styles.w_full,
-              Styles.flex_justify_space_between,
-              Styles.flex_align_center,
-
-              Styles.gap_16
-            ]}
-          >
-            <ViewVD
-              style={[
-                Styles.h_24,
-                Styles.border_radius_8,
-                Styles.bg_white,
-                { width: data.stats.vit * 2 }
-              ]}
-            ></ViewVD>
-            <TextVD style={[Styles.font_20, Styles.weight_regular]}>
-              {data.stats.vit}
-            </TextVD>
-          </ViewVD>
-        </ViewVD>
+        <TitleVD entering={FadeInUp.delay(200)}>Informations</TitleVD>
+        <InformationVD
+          left_text="Géneration"
+          left_entering={FadeInLeft.delay(50)}
+          right_text={data.generation}
+          right_entering={FadeInRight.delay(50)}
+        />
+        <InformationVD
+          left_text="Catégorie"
+          left_entering={FadeInLeft.delay(100)}
+          right_text={data.category.replace(/Pokémon/g, "")}
+          right_entering={FadeInRight.delay(100)}
+        />
+        <InformationVD
+          left_text="Hauteur"
+          left_entering={FadeInLeft.delay(150)}
+          right_text={data.height}
+          right_entering={FadeInRight.delay(150)}
+        />
+        <InformationVD
+          left_text="Poids"
+          left_entering={FadeInLeft.delay(200)}
+          right_text={data.weight}
+          right_entering={FadeInRight.delay(200)}
+        />
+        <TitleVD entering={FadeInUp.delay(200)}>Statistiques</TitleVD>
+        <StatVD
+          left_text="Point de vie"
+          left_entering={FadeInLeft.delay(50)}
+          right_text={data.stats.hp}
+          right_entering={FadeInRight.delay(50)}
+        />
+        <StatVD
+          left_text="Attaque"
+          left_entering={FadeInLeft.delay(100)}
+          right_text={data.stats.atk}
+          right_entering={FadeInRight.delay(100)}
+        />
+        <StatVD
+          left_text="Défense"
+          left_entering={FadeInLeft.delay(150)}
+          right_text={data.stats.def}
+          right_entering={FadeInRight.delay(150)}
+        />
+        <StatVD
+          left_text="Attaque Spéciale"
+          left_entering={FadeInLeft.delay(200)}
+          right_text={data.stats.spe_atk}
+          right_entering={FadeInRight.delay(200)}
+        />
+        <StatVD
+          left_text="Défense Spéciale"
+          left_entering={FadeInLeft.delay(250)}
+          right_text={data.stats.spe_def}
+          right_entering={FadeInRight.delay(250)}
+        />
+        <StatVD
+          left_text="Vitesse"
+          left_entering={FadeInLeft.delay(300)}
+          right_text={data.stats.vit}
+          right_entering={FadeInRight.delay(300)}
+        />
       </Animated.ScrollView>
     </SafeAreaView>
   );

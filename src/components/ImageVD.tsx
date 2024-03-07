@@ -13,7 +13,8 @@ function ImageVD(props: {
 
   return (
     <Animated.Image
-      entering={props.entering} exiting={props.exiting}
+      entering={props.entering}
+      exiting={props.exiting}
       source={type}
       style={[props.style]}
     />

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, TextInput } from "react-native";
-import { ZoomIn } from "react-native-reanimated";
+import { ZoomInLeft, ZoomInRight } from "react-native-reanimated";
 import { NavArrowLeft, Search } from "iconoir-react-native";
 
 import ButtonVD from "@/components/ButtonVD";
@@ -11,7 +11,7 @@ import Styles from "@/styles/Styles";
 function MenuVD(props: { navigation: any }) {
   const [inputValue, setInputValue] = useState("");
 
-  const handleInputChange = (value: string | number) => {
+  const handleInputChange = (value: string) => {
     setInputValue(value);
   };
 
@@ -27,7 +27,6 @@ function MenuVD(props: { navigation: any }) {
 
   return (
     <ViewVD
-      entering={ZoomIn}
       style={[
         Screen.navigation,
         Styles.p_inline_16,
@@ -36,25 +35,27 @@ function MenuVD(props: { navigation: any }) {
         Styles.flex_justify_space_between
       ]}
     >
-      <ButtonVD
-        style={[
-          Styles.bg_white,
-          Styles.p_8,
-          Styles.h_48,
-          Styles.flex_row,
-          Styles.flex_justify_center,
-          Styles.flex_align_center,
-          Styles.border_radius_8
-        ]}
-        onPress={goBack}
-      >
-        <NavArrowLeft
-          color="#1c2226"
-          height={32}
-          width={32}
-        ></NavArrowLeft>
-      </ButtonVD>
-      <ViewVD style={[Styles.flex_row, Styles.flex_align_center]}>
+      <ViewVD entering={ZoomInLeft} style={[Styles.flex_row, Styles.flex_align_center]}>
+        <ButtonVD
+          style={[
+            Styles.bg_white,
+            Styles.p_8,
+            Styles.h_48,
+            Styles.flex_row,
+            Styles.flex_justify_center,
+            Styles.flex_align_center,
+            Styles.border_radius_8
+          ]}
+          onPress={goBack}
+        >
+          <NavArrowLeft
+            color="#1c2226"
+            height={32}
+            width={32}
+          ></NavArrowLeft>
+        </ButtonVD>
+      </ViewVD>
+      <ViewVD entering={ZoomInRight} style={[Styles.flex_row, Styles.flex_align_center]}>
         <TextInput
           style={[
             Screen.inputSearch,
