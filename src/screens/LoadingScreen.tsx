@@ -13,7 +13,7 @@ function LoadingScreen() {
         Styles.flex_justify_center
       ]}
     >
-      <TextVD style={[Styles.font_32, Styles.black]}>En chargement...</TextVD>
+      <TextVD style={[Styles.font_32, Styles.black]}>Loading...</TextVD>
     </SafeAreaView>
   );
 }

@@ -67,7 +67,7 @@ function MenuVD(props: { navigation: any }) {
           style={[
             Screen.inputSearch,
             Styles.bg_white,
-            Styles.p_16,
+            Styles.p_inline_16,
             Styles.h_48,
             Styles.flex_row,
             Styles.flex_justify_center,

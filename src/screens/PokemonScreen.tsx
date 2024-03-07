@@ -174,13 +174,13 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
           right_entering={FadeInRight.delay(150)}
         />
         <StatVD
-          left_text="Attaque Spéciale"
+          left_text="Attaque Spé"
           left_entering={FadeInLeft.delay(200)}
           right_text={data.stats.spe_atk}
           right_entering={FadeInRight.delay(200)}
         />
         <StatVD
-          left_text="Défense Spéciale"
+          left_text="Défense Spé"
           left_entering={FadeInLeft.delay(250)}
           right_text={data.stats.spe_def}
           right_entering={FadeInRight.delay(250)}

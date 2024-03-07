@@ -21,7 +21,7 @@ function StatVD(props: {
   const width = useSharedValue(props.right_text);
 
   const widthStyle = useAnimatedStyle(() => ({
-    width: width.value * 1.2
+    width: width.value + 24
   }));
 
   return (
@@ -33,8 +33,7 @@ function StatVD(props: {
         Styles.flex_align_center,
         Styles.gap_16,
         Styles.mb_8,
-        props.style,
-        Stat.progressBar_container
+        props.style
       ]}
     >
       <TextVD
@@ -48,36 +47,31 @@ function StatVD(props: {
         entering={props.right_entering}
         exiting={props.right_exiting}
         style={[
-          Styles.h_24,
+          Styles.h_32,
           Styles.border_radius_4,
           Styles.bg_white,
+          Styles.flex_row,
+          Styles.flex_justify_flex_end,
+          Styles.flex_align_center,
           Stat.progressBar,
           widthStyle
         ]}
-      ></ViewVD>
-      <TextVD
-        entering={props.right_entering}
-        exiting={props.right_exiting}
-        style={[Styles.font_20, Styles.weight_regular, Styles.m_inline_8]}
       >
-        {props.right_text}
-      </TextVD>
+        <TextVD
+          style={[Styles.font_20, Styles.weight_regular, Styles.m_inline_8]}
+        >
+          {props.right_text}
+        </TextVD>
+      </ViewVD>
     </ViewVD>
   );
 }
 
 const Stat = StyleSheet.create({
   progressBar: {
-    position: "absolute",
-    right: 0,
-    top: 0,
     borderColor: "#b0b0b0",
     borderWidth: 1,
-    zIndex: -1,
     maxWidth: "100%"
-  },
-  progressBar_container: {
-    position: "relative"
   }
 });
 
