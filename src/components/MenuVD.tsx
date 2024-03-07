@@ -35,7 +35,10 @@ function MenuVD(props: { navigation: any }) {
         Styles.flex_justify_space_between
       ]}
     >
-      <ViewVD entering={ZoomInLeft} style={[Styles.flex_row, Styles.flex_align_center]}>
+      <ViewVD
+        entering={ZoomInLeft}
+        style={[Styles.flex_row, Styles.flex_align_center]}
+      >
         <ButtonVD
           style={[
             Styles.bg_white,
@@ -44,7 +47,8 @@ function MenuVD(props: { navigation: any }) {
             Styles.flex_row,
             Styles.flex_justify_center,
             Styles.flex_align_center,
-            Styles.border_radius_8
+            Styles.border_radius_8,
+            Screen.border
           ]}
           onPress={goBack}
         >
@@ -55,7 +59,10 @@ function MenuVD(props: { navigation: any }) {
           ></NavArrowLeft>
         </ButtonVD>
       </ViewVD>
-      <ViewVD entering={ZoomInRight} style={[Styles.flex_row, Styles.flex_align_center]}>
+      <ViewVD
+        entering={ZoomInRight}
+        style={[Styles.flex_row, Styles.flex_align_center]}
+      >
         <TextInput
           style={[
             Screen.inputSearch,
@@ -66,7 +73,8 @@ function MenuVD(props: { navigation: any }) {
             Styles.flex_justify_center,
             Styles.flex_align_center,
             Styles.border_radius_8,
-            Styles.font_16
+            Styles.font_16,
+            Screen.border
           ]}
           onChangeText={handleInputChange}
           value={inputValue}
@@ -83,7 +91,8 @@ function MenuVD(props: { navigation: any }) {
             Styles.flex_justify_center,
             Styles.flex_align_center,
             Styles.border_radius_8,
-            Styles.w_48
+            Styles.w_48,
+            Screen.border
           ]}
           onPress={inputSubmit}
         >
@@ -99,6 +108,10 @@ function MenuVD(props: { navigation: any }) {
 }
 
 const Screen = StyleSheet.create({
+  border: {
+    borderColor: "#b0b0b0",
+    borderWidth: 1
+  },
   inputSearch: {
     transform: [{ translateX: 16 }],
     width: 200

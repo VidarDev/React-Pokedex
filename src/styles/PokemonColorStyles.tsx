@@ -55,7 +55,7 @@ const PokemonColorStyles = StyleSheet.create({
   tenebres: {
     backgroundColor: "#b09f94"
   },
-  unknow: {
+  unknown: {
     backgroundColor: "#8fb9ac"
   },
   vol: {

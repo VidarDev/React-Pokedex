@@ -13,6 +13,7 @@ import axios from "axios";
 import ImageVD from "@/components/ImageVD";
 import InformationVD from "@/components/InformationVD";
 import MenuVD from "@/components/MenuVD";
+import StatVD from "@/components/StatVD";
 import TextVD from "@/components/TextVD";
 import TitleVD from "@/components/TitleVD";
 import ViewVD from "@/components/ViewVD";
@@ -20,7 +21,6 @@ import ErrorScreen from "@/screens/ErrorScreen";
 import LoadingScreen from "@/screens/LoadingScreen";
 import PokemonColorStyles from "@/styles/PokemonColorStyles";
 import Styles from "@/styles/Styles";
-import StatVD from "@/components/StatVD";
 
 function formatString(str: string) {
   return str
@@ -59,13 +59,8 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
   });
 
   // Dynamic style
-  const typeName: string = data
-    ? formatString(data.types[0].name.toLowerCase())
-    : "unknow";
-  const dynamicStyle =
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    PokemonColorStyles[typeName] || PokemonColorStyles.unknow;
+  const typeName: string = data?.types?.[0]?.name?.toLowerCase() || "unknown";
+  const dynamicStyle = PokemonColorStyles[typeName] || PokemonColorStyles.unknown;
 
   useEffect(() => {
     if (route.params.pokemonRef) {
@@ -75,7 +70,7 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
 
   if (isPending) return <LoadingScreen />;
 
-  if (error) return <ErrorScreen />;
+  if (data.status == "404") return <ErrorScreen navigation={navigation} />;
 
   return (
     <SafeAreaView style={[dynamicStyle, Styles.areaView, Styles.black]}>
@@ -195,6 +190,7 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
           left_entering={FadeInLeft.delay(300)}
           right_text={data.stats.vit}
           right_entering={FadeInRight.delay(300)}
+          style={[Styles.pb_32]}
         />
       </Animated.ScrollView>
     </SafeAreaView>
