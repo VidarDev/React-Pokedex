@@ -60,7 +60,7 @@ function StartScreen({ navigation, route }: { navigation: any; route: any }) {
 
   // Dynamic style
   const typeName: string = data?.types?.[0]?.name?.toLowerCase() || "unknown";
-  const dynamicStyle = PokemonColorStyles[typeName] || PokemonColorStyles.unknown;
+  const dynamicStyle = PokemonColorStyles[formatString(typeName)] || PokemonColorStyles.unknown;
 
   useEffect(() => {
     if (route.params.pokemonRef) {
