@@ -33,3 +33,20 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# macOS
+.DS_Store
+*.pem
+
+# JetBrains
+.idea
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# Ignore files
+package-lock.json
+
